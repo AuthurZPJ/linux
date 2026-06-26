@@ -20,4 +20,17 @@ config ARM64_RELOC_TEST
 	depends on m
 	tristate "Relocation testing module"
 
+config ARM64_AMU_LATENCY
+	depends on m
+	depends on ARM64_AMU_EXTN
+	tristate "AMU counter read / this_cpu_has_cap latency benchmark module"
+	help
+	  A loadable module that measures the per-operation cost of reading the
+	  AMU core/constant counters (SYS_AMEVCNTR0_CORE_EL0 /
+	  SYS_AMEVCNTR0_CONST_EL0) and of this_cpu_has_cap(ARM64_WORKAROUND_2457168).
+
+	  It does not touch the AMU hot paths in topology.c; it only calls the
+	  same primitives on demand. Say M to build it as a module, load it with
+	  insmod and read the results from dmesg. If unsure, say N.
+
 source "drivers/hwtracing/coresight/Kconfig"
